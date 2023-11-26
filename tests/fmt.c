@@ -54,11 +54,12 @@ int test_parse_ipv4_addr() {
     };
 
     tc_len = sizeof(tc)/sizeof(tc[0]);
+    printf("test_parse_ipv4_addr: start\n");
     for (int i = 0; i < tc_len; i++) {
-        printf("test_parse_ipv4_addr:%s start\n", tc[i].name);
+        printf("(%d) %s: start\n", i, tc[i].name);
         
         tc_failed = 0;
-        err = parse_ipv4_addr(tc[i].addr, tc[i].octets);
+        err = parse_ipv4_addr(tc[i].addr, octets);
         if (tc[i].err == 0 && err == 0) {
             for (int j = 0; j < 4; j++) {
                 if (tc[i].octets[j] != octets[j]) {
@@ -75,26 +76,31 @@ int test_parse_ipv4_addr() {
         }
 
         if (tc_failed == 0) {
-            printf("test_parse_ipv4_addr:%s passed\n", tc[i].name);
+            printf("(%d) %s: passed\n", i, tc[i].name);
         } else {
-            fprintf(stderr, "test_parse_ipv4_addr:%s failed\n", tc[i].name);
+            fprintf(stderr, "(%d) %s: failed\n", i, tc[i].name);
             fails++;
         }
+    }
+
+    if (fails == 0) {
+        printf("test_parse_ipv4_addr: passed\n");
+    } else {
+        fprintf(stderr, "test_parse_ipv4_addr: failed (%d test cases)\n", fails);
     }
 
     return fails;
 }
 
 int main() {
-    int failed = 0;
+    int fails = 0;
 
     if (test_parse_ipv4_addr() != 0) {
-        fprintf(stderr, "test_parse_ipv4_addr failed\n");
-        failed++;
+        fails++;
     }
 
-    if (failed > 0) {
-        fprintf(stderr, "%d tests failed\n", failed);
+    if (fails > 0) {
+        fprintf(stderr, "\n%d test(s) failed\n", fails);
         exit(1);
     }
 

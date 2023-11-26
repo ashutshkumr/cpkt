@@ -7,11 +7,11 @@
 int parse_ipv4_addr(const char* addr, unsigned char* octets) {
     unsigned i = 0;     // indexing for addr
     unsigned j = 0;     // indexing for octets
-    unsigned char octet = 0;
+    unsigned octet = 0;
 
     while (addr[i] != '\0') {
         if (isdigit(addr[i])) {
-            octet = (octet * 10) + addr[i] - '0';
+            octet = (octet * 10) + (addr[i] - '0');
             if (octet > 255) {
                 fprintf(stderr, "value %d in octet %d is not in range [0, 255]\n", octet, j);
                 return -1;
